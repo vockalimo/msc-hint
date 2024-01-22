@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Web Component: &lt;msc-hint /> - web components based hint feature</title>
+<meta name="description" content="Hint is a very common UI effect to help user easy understand particular nouns. With msc-hint, developers could adopt this feature to web page easier." />
+<link rel="stylesheet" href="css/defaults.css">
+<link rel="stylesheet" href="css/input-set.css">
+<link rel="stylesheet" href="css/radio-set.css">
+<script type="module" src="mjs/wc-msc-hint.js"></script>
+
+<style>
+/* reset */
+body,div,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,legend,input,textarea,p,article,aside,figcaption,figure,nav,section,mark,audio,video,main{margin:0;padding:0}
+article,aside,figcaption,figure,nav,section,main{display:block}
+fieldset,img{border:0}
+address,caption,cite,em,strong{font-style:normal;font-weight:400}
+ol,ul{list-style:none}
+caption{text-align:left}
+h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:400}
+abbr{border:0;font-variant:normal}
+input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit;}
+body{-webkit-text-size-adjust:none}
+select,input,button,textarea{font:100% arial,helvetica,clean,sans-serif;}
+del{font-style:normal;text-decoration:none}
+pre{font-family:monospace;line-height:100%}
+progress{-webkit-appearance:none;appearance:none;overflow:hidden;border:0 none;}
+
+/* page */
+:root {
+  --bd-bg: #fff;
+  --subject-text: #000;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bd-bg: #121212;
+    --subject-text: #e8eaed;
+  }
+}
+
+@supports (bottom:env(safe-area-inset-top)) {
+  :root {
+    --el: env(safe-area-inset-left);
+    --et: env(safe-area-inset-top);
+    --eb: env(safe-area-inset-bottom);
+  }
+
+  @supports (bottom:max(.75em,1px)) {
+    :root {
+      --spl: max(var(--basis-padding), var(--el));
+      --spb: max(var(--basis-padding), var(--eb));
+    }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --intro-text: #9aa0a6;
+  }
+}
+
+/* page */
+html{font-family:system-ui,sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;font-size:16px;background-color:var(--main-bgc);scroll-behavior:smooth;}
+html[dir='rtl']{--direction-factor:-1;}
+#bd{margin:0 auto;}
+a,a:hover{text-decoration:none;}
+a{color:rgba(var(--anchor-green));}
+.center-module{max-inline-size:var(--max-width);margin:0 auto;box-sizing:border-box;padding:var(--section-padding);}
+.center-module--main>*{margin-block-start:var(--margin-block-gap);}
+
+.absolute-center{position:absolute;top:0;left:0;bottom:0;right:0;margin:auto;}
+.text-overflow{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.text-overflow--ltr-start{direction:rtl;text-align:start;}
+.text-overflow--rtl{direction:rtl;text-align:end;}
+.line-fadeout{position:relative;}
+.line-fadeout:after{position:absolute;content:'';text-align:right;bottom:0;right:0;width:70%;height:var(--fadeout-h, 1.2em);background:linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1));}
+.line-clampin{display:-webkit-box;-webkit-line-clamp:var(--line-clamp,2);-webkit-box-orient:vertical;text-overflow:ellipsis;overflow:hidden;}
+.stuff{text-indent:100%;white-space:nowrap;overflow:hidden;}
+.aspect-ratio{position:relative;width:100%;--w:4;--h:3;}
+.aspect-ratio:before{content:'';width:100%;padding-top:calc(var(--h) * 100% / var(--w));display:block;}
+.aspect-ratio .content{position:absolute;top:0;left:0;right:0;bottom:0;}
+.force-radius{overflow:hidden;transform:translate3d(0,0,0);border-radius:var(--r,8px);}
+.contain{object-fit:contain;}
+.cover{object-fit:cover;}
+.overscrolling{-webkit-overflow-scrolling:touch;overflow:hidden;overflow-y:scroll;overscroll-behavior:contain;}
+.vanquish{position:absolute;left:0;top:0;width:1px;height:1px;overflow:hidden;}
+.flex-center{display:flex;justify-content:center;align-items:center;}
+
+/* media query */
+@media screen and (max-width: 767px) {
+  :root {
+    --view: 'mobile';
+    --section-padding: 0;
+    --border-radius: 0;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  :root {
+    --view: 'tablet';
+    --max-width: 1023px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  :root {
+    --view: 'desktop';
+    --max-width: 1279px;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  :root {
+    --view: 'desktop max';
+    --max-width: 1280px;
+    --section-padding: 0 1.5em;
+  }
+}
+
+html,body{font-family:system-ui,sans-serif;text-size-adjust:100%;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;font-size:16px;}
+#hd,#ft{display:none;}
+body{position:relative;inline-size:100vw;block-size:100vh;margin:0;background:var(--bd-bg);}
+
+.wrap{--background-color:#dce2f0;background-color:var(--background-color);inline-size:100%;max-inline-size:min(800px, calc(100% - 2em));box-sizing:border-box;}
+
+/* setting-form */
+.setting-form {
+  --background-color: #dce2f0;
+  --subject-inline-size: 150px;
+
+  --il-align-item: center;
+  --il-pair-gap: 6px;
+
+  --a11y-block-link-expand: 6px;
+  --a11y-block-link-border-radius: 32px;
+
+  inline-size: 100%;
+  max-inline-size: min(800px, calc(100% - 2em));
+  box-sizing: border-box;
+  margin-block: 2.5em;
+  margin-inline: auto;
+  display: block;
+
+  .demo-wrap {
+    inline-size: 100%;
+    aspect-ratio: 2/1.5;
+    /*background-color: var(--background-color);*/
+    border-radius: .5em;
+    display: grid;
+    place-content: center;
+  }
+
+  .adjustments {
+    .adjustments__row {
+      display: flex;
+      align-items: flex-start;
+      gap: 1em;
+
+      &:nth-child(n + 2 of .adjustments__row) {
+        margin-block-start: .75em;
+      }
+
+      .adjustments__row__subject {
+        inline-size: var(--subject-inline-size);
+        color: var(--subject-text);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        &::before {
+          inline-size: 6px;
+          aspect-ratio: 1/1;
+          border-radius: 4px;
+          background-color: currentColor;
+          content: '';
+        }
+      }
+
+      .adjustments__row__content {
+        color: var(--intro-text);
+        min-inline-size: 0;
+        flex-grow: 1;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1em;
+      }
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    --background-color: rgba(var(--midnight));
+
+    .radio-set,.input-set {
+      --default-accent-color: rgba(75 168 248);
+    }
+  }
+}
+
+/* il-pair */
+.il-pair {
+  --gap: var(--il-pair-gap, .75em);
+  --align-items: var(--il-align-item, flex-start);
+
+  display: flex;
+  align-items: var(--align-items);
+  gap: var(--gap);
+
+  > :first-child {
+    flex-shrink: 0;
+  }
+
+  > :last-child {
+    line-height: 20px;
+  }
+}
+
+
+/* msc-hint */
+msc-hint:not(:defined){visibility:hidden;}
+msc-hint {
+  z-index: 1;
+
+  &[data-icon=info] {
+    --msc-hint-trigger-icon-path: path('M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z');
+  }
+
+  &[data-icon=help-outline] {
+    --msc-hint-trigger-icon-path: path('M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z');
+  }
+
+  &[data-icon=warning-amber] {
+    --msc-hint-trigger-icon-path: path('M12 5.99L19.53 19H4.47L12 5.99M12 2L1 21h22L12 2zm1 14h-2v2h2v-2zm0-6h-2v4h2v-4z');
+  }
+
+  &[data-icon=settings] {
+    --msc-hint-trigger-icon-path: path('M19.43 12.98c.04-.32.07-.64.07-.98 0-.34-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.09-.16-.26-.25-.44-.25-.06 0-.12.01-.17.03l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.06-.02-.12-.03-.18-.03-.17 0-.34.09-.43.25l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98 0 .33.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.09.16.26.25.44.25.06 0 .12-.01.17-.03l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.06.02.12.03.18.03.17 0 .34-.09.43-.25l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zm-1.98-1.71c.04.31.05.52.05.73 0 .21-.02.43-.05.73l-.14 1.13.89.7 1.08.84-.7 1.21-1.27-.51-1.04-.42-.9.68c-.43.32-.84.56-1.25.73l-1.06.43-.16 1.13-.2 1.35h-1.4l-.19-1.35-.16-1.13-1.06-.43c-.43-.18-.83-.41-1.23-.71l-.91-.7-1.06.43-1.27.51-.7-1.21 1.08-.84.89-.7-.14-1.13c-.03-.31-.05-.54-.05-.74s.02-.43.05-.73l.14-1.13-.89-.7-1.08-.84.7-1.21 1.27.51 1.04.42.9-.68c.43-.32.84-.56 1.25-.73l1.06-.43.16-1.13.2-1.35h1.39l.19 1.35.16 1.13 1.06.43c.43.18.83.41 1.23.71l.91.7 1.06-.43 1.27-.51.7 1.21-1.07.85-.89.7.14 1.13zM12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z');
+  }
+
+  @media (prefers-color-scheme: dark) {
+    --msc-hint-trigger-color: rgba(224 228 233);
+    --msc-hint-trigger-background-color: rgba(255 255 255/.05);
+    --msc-hint-trigger-overlay-color: rgba(224 228 233/.2);
+
+    --msc-hint-panel-background-color: rgba(29 34 40);
+    --msc-hint-panel-border-color: rgba(35 42 49);
+  }
+
+  .content {
+    --subject-color: rgba(35 42 49);
+    --text-color: rgba(35 42 49);
+
+    font-size: 14px;
+    inline-size: 300px;
+    text-wrap: balance;
+    color: var(--text-color);
+
+    p {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--subject-color);
+      margin-block-end: 4px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      --subject-color: rgba(240 243 245);
+      --text-color: rgba(151 158 168);
+    }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .wrap {
+    --background-color: rgba(29 34 40);
+  }
+}
+
+msc-any-pip:not(:defined){visibility:hidden;}
+</style>
+</head>
+
+<body class="flex-center">
+
+  <form class="setting-form">
+    <div class="demo-wrap">
+      <msc-hint data-horizontal-align="center" data-vertical-align="end">
+        <div class="content">
+          <p>What is Lorem Ipsum?</p>
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+        </div>
+      </msc-hint>
+    </div>
+
+    <ul class="adjustments">
+      <li class="adjustments__row">
+        <p class="adjustments__row__subject">Horizontal align：</p>
+        <div class="adjustments__row__content">
+          <div class="il-pair a11y-block-link">
+            <div class="radio-set">
+              <input id="horizontal-align-0" type="radio" name="horizontal-align" value="start" />
+              <label class="radio-set__label" for="horizontal-align-0"></label>
+            </div>
+
+            <label for="horizontal-align-0">
+              start
+            </label>
+          </div>
+
+          <div class="il-pair a11y-block-link">
+            <div class="radio-set">
+              <input id="horizontal-align-1" type="radio" name="horizontal-align" value="center" checked />
+              <label class="radio-set__label" for="horizontal-align-1"></label>
+            </div>
+
+            <label for="horizontal-align-1">
+              center
+            </label>
+          </div>
+
+          <div class="il-pair a11y-block-link">
+            <div class="radio-set">
+              <input id="horizontal-align-2" type="radio" name="horizontal-align" value="end" />
+              <label class="radio-set__label" for="horizontal-align-2"></label>
+            </div>
+
+            <label for="horizontal-align-2">
+              end
+            </label>
+          </div>
+        </div>
+      </li>
+
+      <li class="adjustments__row">
+        <p class="adjustments__row__subject">Vertical align：</p>
+        <div class="adjustments__row__content">
+          <div class="il-pair a11y-block-link">
+            <div class="radio-set">
+              <input id="vertical-align-0" type="radio" name="vertical-align" value="start" />
+              <label class="radio-set__label" for="vertical-align-0"></label>
+            </div>
+
+            <label for="vertical-align-0">
+              start
+            </label>
+          </div>
+
+          <div class="il-pair a11y-block-link">
+            <div class="radio-set">
+              <input id="vertical-align-1" type="radio" name="vertical-align" value="end" checked />
+              <label class="radio-set__label" for="vertical-align-1"></label>
+            </div>
+
+            <label for="vertical-align-1">
+              end
+            </label>
+          </div>
+        </div>
+      </li>
+
+      <li class="adjustments__row">
+        <p class="adjustments__row__subject">Hover：</p>
+        <div class="adjustments__row__content">
+          <div class="il-pair a11y-block-link">
+            <div class="radio-set">
+              <input id="hover-0" type="radio" name="hover" value="yes" />
+              <label class="radio-set__label" for="hover-0"></label>
+            </div>
+
+            <label for="hover-0">
+              Yes
+            </label>
+          </div>
+
+          <div class="il-pair a11y-block-link">
+            <div class="radio-set">
+              <input id="hover-1" type="radio" name="hover" value="no" checked />
+              <label class="radio-set__label" for="hover-1"></label>
+            </div>
+
+            <label for="hover-1">
+              No
+            </label>
+          </div>
+        </div>
+      </li>
+
+      <li class="adjustments__row">
+        <p class="adjustments__row__subject">Icon：</p>
+        <div class="adjustments__row__content">
+
+          <div class="input-set input-set--hide-label">
+            <select name="icon">
+              <option disabled>Select icon</option>
+              <hr />
+              <option value="info">info</option>
+              <option value="help-outline">Help Outline</option>
+              <option value="warning-amber">Warning Amber</option>
+              <option value="settings">Settings</option>
+            </select>
+            <label class="input-set__label">
+              <span class="input-set__label__span">label</span>
+            </label>
+            <em class="input-set__em"></em>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </form>
+
+<script type="module">
+customElements.whenDefined('msc-hint').then(() => {
+  const form = document.querySelector('.setting-form');
+  const hint = document.querySelector('msc-hint');
+
+  const onChange = () => {
+    const formData = new FormData(form);
+    const fd = Object.fromEntries(formData.entries());
+
+    hint.dataset.horizontalAlign = fd['horizontal-align'];
+    hint.dataset.verticalAlign = fd['vertical-align'];
+    hint.hover = fd['hover'] === 'yes';
+    hint.dataset.icon = fd['icon'];
+  };
+
+  // events
+  form.addEventListener('change', onChange);
+});
+</script>
+</body>
+
+</html>
