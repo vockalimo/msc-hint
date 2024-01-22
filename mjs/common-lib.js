@@ -551,11 +551,11 @@ Object.defineProperties(_wcl, {
 
       //x
       body = document.body || { scrollLeft: 0 };
-      x = e.pageX || (clientX + (docElement.scrollLeft || body.scrollLeft) - (docElement.clientLeft || 0));
+      x = e?.pageX || (clientX + (docElement.scrollLeft || body.scrollLeft) - (docElement.clientLeft || 0));
 
       //y
       body = document.body || { scrollTop: 0 };
-      y = e.pageY || (clientY + (docElement.scrollTop || body.scrollTop) - (docElement.clientTop || 0));
+      y = e?.pageY || (clientY + (docElement.scrollTop || body.scrollTop) - (docElement.clientTop || 0));
 
       return { x, y };
     }
