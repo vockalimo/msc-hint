@@ -117,8 +117,8 @@ msc-hint::part(panel) {
 </msc-hint>
 ```
 
-- data-vertical-align： start || end. Default is end.
-- data-horizontal-align： start || center || end. Default is center.
+- data-vertical-align： start || end. Default is `end`.
+- data-horizontal-align： start || center || end. Default is `center`.
 
 ## Attributes
 
@@ -143,6 +143,6 @@ Set hover able for &lt;msc-hint />. Once setting, &lt;msc-hint /> will popup pan
 
 ## Reference
 - [&lt;msc-hint /> demo](https://blog.lalacube.com/mei/webComponent_msc-hint.html)
-- [MSN > ::part()](https://developer.mozilla.org/en-US/docs/Web/CSS/::part)
+- [MDN > ::part()](https://developer.mozilla.org/en-US/docs/Web/CSS/::part)
 - [WEBCOMPONENTS.ORG](https://www.webcomponents.org/element/msc-hint)
 - [YouTube](https://youtu.be/N9pSjB1INxU)
