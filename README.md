@@ -136,7 +136,7 @@ Set hover able for &lt;msc-hint />. Once setting, &lt;msc-hint /> will popup pan
 
 - **autoposition**
 
-Set autoposition for <msc-hint />. Once setting, <msc-hint /> will auto position popup panel. Default is `false`（not set）.
+Set autoposition for &lt;msc-hint />. Once setting, &lt;msc-hint /> will auto position popup panel. Default is `false`（not set）.
 
 ```html
 <msc-hint autoposition>
