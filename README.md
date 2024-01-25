@@ -134,11 +134,28 @@ Set hover able for &lt;msc-hint />. Once setting, &lt;msc-hint /> will popup pan
 </msc-hint>
 ```
 
+- **autoposition**
+
+Set autoposition for <msc-hint />. Once setting, <msc-hint /> will auto position popup panel. Default is `false`（not set）.
+
+```html
+<msc-hint autoposition>
+  ...
+</msc-hint>
+```
+
+## Method
+
+| Method Signature | Description |
+| ----------- | ----------- |
+| refresh() | Force refresh &lt;msc-hint />. (active only when autoposition set) |
+
 ## Property
 
 | Property Name | Type | Description |
 | ----------- | ----------- | ----------- |
 | hover | Boolean | Getter / Setter for hover. Default is false. |
+| autoposition | Boolean | Getter / Setter for autoposition. Default is false. |
 
 
 ## Reference
