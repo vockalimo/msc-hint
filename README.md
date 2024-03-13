@@ -2,7 +2,7 @@
 
 [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/msc-hint) [![DeepScan grade](https://deepscan.io/api/teams/16372/projects/26354/branches/836448/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=16372&pid=26354&bid=836448)
 
-Hint is a very common UI effect to help user easy understand particular nouns. With &lt;msc-hint />, developers could adopt this feature to web page easier.
+AHint is a very common UI effect to help user easy understand particular nouns. With &lt;msc-hint />, developers could adopt this feature to web page easier.
 
 ![msc-hint](https://github.com/meistudioli/msc-hint/assets/10822546/3d71761b-675a-4ac8-9af2-f0edd8cc370d)
 
