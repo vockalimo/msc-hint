@@ -1,0 +1,12 @@
+[user]
+	name = vocka
+	email = vocka@yahooinc.com
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[core]
+	autocrlf = input
+[init]
+	defaultBranch = main
