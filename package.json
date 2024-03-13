@@ -1,25 +1,15 @@
 {
-  "name": "msc-hint",
-  "version": "1.0.2",
-  "description": "Hint is a very common UI effect to help user easy understand particular nouns. With msc-hint, developers could adopt this feature to web page easier.",
-  "main": "index.html",
+  "name": "vite-project",
+  "version": "1.0.0",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "build": "BUILD_MODE=development vite build --minify=false --outDir dist/unminified",
+    "build:minify": "BUILD_MODE=production vite build --minify esbuild --outDir dist/minified",
+    "preview": "vite preview"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/meistudioli/msc-hint.git"
-  },
-  "keywords": [
-    "web",
-    "front-end",
-    "web component",
-    "hint"
-  ],
-  "author": "Paul Li",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/meistudioli/msc-hint/issues"
-  },
-  "homepage": "https://github.com/meistudioli/msc-hint#readme"
+  "devDependencies": {
+    "esbuild": "0.20.1",
+    "vite": "^5.1.4"
+  }
 }
