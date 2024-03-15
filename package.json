@@ -30,5 +30,8 @@
   "devDependencies": {
     "esbuild": "0.20.1",
     "vite": "^5.1.4"
+  },
+  "dependencies": {
+    "user": "^0.0.0"
   }
 }
