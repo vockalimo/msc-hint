@@ -20,6 +20,7 @@ jobs:
 
   publish-npm:
     needs: build
+    environment: production
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -30,14 +31,14 @@ jobs:
           always-auth: true
       - run: npm ci
       - run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.npm_token }}" > .npmrc
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.npm_tokenv1 }}" > .npmrc
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKENV1 }}
       - run: npm whoami
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKENV1 }}
       - run: npm config list
       - name: Publish npm
         run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKENV1 }}
